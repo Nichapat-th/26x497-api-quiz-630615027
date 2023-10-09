@@ -14,11 +14,15 @@ export type EnrollmentGetResponse = {
 
 export const GET = async () => {
   const prisma = getPrisma();
-
-  // 3. display enrollment data (showing student data and course data)
-  // const enrollments = await prisma...
+  const enrollments: EnrollmentWithRelation[] =
+    await prisma.enrollment.findMany({
+      include: {
+        student: true,
+        course: true,
+      },
+    });
 
   return NextResponse.json<EnrollmentGetResponse>({
-    enrollments: [], //replace empty array with result from DB
+    enrollments: enrollments,
   });
 };
